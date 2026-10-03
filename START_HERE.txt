@@ -1,0 +1,31 @@
+QUIZZY FIXED - RUN INSTRUCTIONS
+
+1) FRONTEND (PowerShell in this folder)
+   npm install
+   npm run dev
+
+2) BACKEND (new PowerShell)
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   python -m pip install -r requirements.txt
+   python -m uvicorn main:app --reload --port 8000
+
+3) Open http://localhost:3000
+
+IMPORTANT
+- Create a NEW game/PIN after restarting the backend. Rooms are stored in memory.
+- Test host and student in separate browser windows/tabs.
+- The duplicate-player issue is fixed using a stable browser session ID.
+- Host WebSocket no longer reconnects when quiz state loads, which fixes broken Next Question flow.
+
+
+AI QUIZ MAKER
+==============
+1. Open backend/.env
+2. Put your Groq key after GROQ_API_KEY=
+3. You may leave GROQ_MODEL blank; Quizzy will choose an available Groq text model.
+4. Restart Uvicorn after editing .env.
+5. Host a game -> Make it with AI -> generate -> review/edit -> Create Game.
+
+The Next Question fix from the previous build is included in this project.
