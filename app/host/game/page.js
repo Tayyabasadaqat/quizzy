@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Suspense,
   useEffect,
   useMemo,
   useRef,
@@ -19,7 +20,7 @@ import {
 
 const ANSWER_SYMBOLS = ["▲", "◆", "●", "■"];
 
-export default function HostGame() {
+function HostGameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -181,7 +182,8 @@ export default function HostGame() {
       if (data.type === "player_eliminated") {
         setPlayers((current) =>
           current.filter(
-            (player) => player.id !== data.playerId
+            (player) =>
+              player.id !== data.playerId
           )
         );
 
@@ -569,25 +571,41 @@ export default function HostGame() {
         {eliminationNotice && (
           <motion.div
             key={eliminationNotice.name}
-            initial={{ opacity: 0, y: -20, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -15, scale: 0.96 }}
+            initial={{
+              opacity: 0,
+              y: -20,
+              scale: 0.96,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            exit={{
+              opacity: 0,
+              y: -15,
+              scale: 0.96,
+            }}
             style={{
               position: "fixed",
               top: 22,
               left: "50%",
-              transform: "translateX(-50%)",
+              transform:
+                "translateX(-50%)",
               zIndex: 9999,
               padding: "14px 20px",
               borderRadius: 14,
               background: "#17171c",
               color: "white",
-              boxShadow: "0 12px 35px rgba(0,0,0,.28)",
+              boxShadow:
+                "0 12px 35px rgba(0,0,0,.28)",
               fontWeight: 800,
               letterSpacing: ".2px",
             }}
           >
-            {eliminationNotice.avatar} {eliminationNotice.name} got eliminated 💀
+            {eliminationNotice.avatar}{" "}
+            {eliminationNotice.name} got
+            eliminated 💀
           </motion.div>
         )}
       </AnimatePresence>
@@ -595,7 +613,6 @@ export default function HostGame() {
       {/* TOP BAR */}
 
       <header className="game-topbar">
-
         <div className="game-brand">
           ⚡ QUIZZY
         </div>
@@ -612,7 +629,6 @@ export default function HostGame() {
             {pin}
           </strong>
         </div>
-
       </header>
 
       {!connected && (
@@ -681,7 +697,7 @@ export default function HostGame() {
             }
             finalQuestion={
               questionIndex ===
-              questions.length - 1
+                questions.length - 1
             }
             nextQuestion={
               nextQuestion
@@ -693,7 +709,6 @@ export default function HostGame() {
     </main>
   );
 }
-
 
 // ========================================
 // QUESTION PHASE
@@ -808,7 +823,6 @@ function QuestionPhase({
     </motion.section>
   );
 }
-
 
 // ========================================
 // REVEAL PHASE
@@ -940,7 +954,6 @@ function RevealPhase({
   );
 }
 
-
 // ========================================
 // LEADERBOARD PHASE
 // ========================================
@@ -1048,5 +1061,24 @@ function LeaderboardPhase({
       </button>
 
     </motion.section>
+  );
+}
+
+// ========================================
+// NEXT.JS PRODUCTION BUILD WRAPPER
+// ========================================
+
+export default function HostGame() {
+  return (
+    <Suspense
+      fallback={
+        <main className="game-loading">
+          <div>⚡</div>
+          <p>Preparing chaos...</p>
+        </main>
+      }
+    >
+      <HostGameContent />
+    </Suspense>
   );
 }
