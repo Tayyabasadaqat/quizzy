@@ -152,7 +152,7 @@ Rules:
 - correctAnswer is the zero-based index 0, 1, 2, or 3 of the single correct option.
 - Questions must be factual, clear, classroom-safe, and appropriate for {difficulty} difficulty.
 - Avoid trick wording and avoid duplicate questions.
-- timeLimit must be 10, 15, 20, 30, 45, or 60 seconds.
+- timeLimit must be exactly 20 seconds for every question.
 """
 
     user_prompt = f"Topic: {topic}\nDifficulty: {difficulty}"
@@ -198,7 +198,7 @@ Rules:
             text = str(q.get("text", "")).strip()
             options = [str(x).strip() for x in q.get("options", [])]
             correct = q.get("correctAnswer")
-            time_limit = q.get("timeLimit", 20)
+            time_limit = 20
             if not text or len(options) != 4 or any(not x for x in options):
                 raise ValueError(f"Question {index + 1} is incomplete.")
             if not isinstance(correct, int) or correct not in range(4):
