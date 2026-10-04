@@ -82,7 +82,7 @@ localStorage.setItem(
           <input
             autoFocus
             maxLength={20}
-            placeholder="Definitely Not Sir"
+            placeholder="Enter your nickname"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             onKeyDown={(e) => {
